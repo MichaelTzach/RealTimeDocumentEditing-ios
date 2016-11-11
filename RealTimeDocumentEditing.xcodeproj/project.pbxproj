@@ -10,7 +10,6 @@
 		DCAAF0CE86C0626C56A8CC34 /* libPods-RealTimeDocumentEditing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 935C1776D4D76A8593CB4C93 /* libPods-RealTimeDocumentEditing.a */; };
 		F59030D71DD5B561009CE16F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F59030D61DD5B561009CE16F /* main.m */; };
 		F59030DA1DD5B561009CE16F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F59030D91DD5B561009CE16F /* AppDelegate.m */; };
-		F59030DD1DD5B561009CE16F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F59030DC1DD5B561009CE16F /* ViewController.m */; };
 		F59030E01DD5B561009CE16F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F59030DE1DD5B561009CE16F /* Main.storyboard */; };
 		F59030E21DD5B561009CE16F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F59030E11DD5B561009CE16F /* Assets.xcassets */; };
 		F59030E51DD5B561009CE16F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F59030E31DD5B561009CE16F /* LaunchScreen.storyboard */; };
@@ -18,6 +17,8 @@
 		F5D1B6DF1DD5B9E300157F7E /* DocumentsDataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D1B6DE1DD5B9E300157F7E /* DocumentsDataHandler.m */; };
 		F5D1B6E31DD5C38A00157F7E /* RealTimeDocumetUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D1B6E21DD5C38A00157F7E /* RealTimeDocumetUser.m */; };
 		F5D1B6E71DD5C4F900157F7E /* RealTimeDocumetDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D1B6E61DD5C4F900157F7E /* RealTimeDocumetDocument.m */; };
+		F5D1B6EF1DD5ED4A00157F7E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D1B6EE1DD5ED4A00157F7E /* ViewController.m */; };
+		F5D1B6F21DD5ED9900157F7E /* CreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D1B6F11DD5ED9900157F7E /* CreateViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,8 +29,6 @@
 		F59030D61DD5B561009CE16F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F59030D81DD5B561009CE16F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F59030D91DD5B561009CE16F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		F59030DB1DD5B561009CE16F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		F59030DC1DD5B561009CE16F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		F59030DF1DD5B561009CE16F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F59030E11DD5B561009CE16F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F59030E41DD5B561009CE16F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -41,6 +40,10 @@
 		F5D1B6E21DD5C38A00157F7E /* RealTimeDocumetUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RealTimeDocumetUser.m; path = Application/Model/RealTimeDocumetUser.m; sourceTree = "<group>"; };
 		F5D1B6E51DD5C4F900157F7E /* RealTimeDocumetDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RealTimeDocumetDocument.h; path = Application/Model/RealTimeDocumetDocument.h; sourceTree = "<group>"; };
 		F5D1B6E61DD5C4F900157F7E /* RealTimeDocumetDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RealTimeDocumetDocument.m; path = Application/Model/RealTimeDocumetDocument.m; sourceTree = "<group>"; };
+		F5D1B6ED1DD5ED4A00157F7E /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = ViewControllers/ViewController.h; sourceTree = "<group>"; };
+		F5D1B6EE1DD5ED4A00157F7E /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = ViewControllers/ViewController.m; sourceTree = "<group>"; };
+		F5D1B6F01DD5ED9900157F7E /* CreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateViewController.h; path = ViewControllers/CreateViewController.h; sourceTree = "<group>"; };
+		F5D1B6F11DD5ED9900157F7E /* CreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreateViewController.m; path = ViewControllers/CreateViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,8 +96,7 @@
 		F59030D41DD5B561009CE16F /* RealTimeDocumentEditing */ = {
 			isa = PBXGroup;
 			children = (
-				F59030DB1DD5B561009CE16F /* ViewController.h */,
-				F59030DC1DD5B561009CE16F /* ViewController.m */,
+				F5D1B6E91DD5EC1000157F7E /* ViewControllers */,
 				F5D1B6E41DD5C38D00157F7E /* Model */,
 				F5D1B6E01DD5BE2000157F7E /* DataHandlers */,
 				F5D1B6E81DD5CACD00157F7E /* Resources */,
@@ -143,6 +145,17 @@
 				F5D1B6DB1DD5B70900157F7E /* GoogleService-Info.plist */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		F5D1B6E91DD5EC1000157F7E /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				F5D1B6ED1DD5ED4A00157F7E /* ViewController.h */,
+				F5D1B6EE1DD5ED4A00157F7E /* ViewController.m */,
+				F5D1B6F01DD5ED9900157F7E /* CreateViewController.h */,
+				F5D1B6F11DD5ED9900157F7E /* CreateViewController.m */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -269,9 +282,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F59030DD1DD5B561009CE16F /* ViewController.m in Sources */,
+				F5D1B6EF1DD5ED4A00157F7E /* ViewController.m in Sources */,
 				F59030DA1DD5B561009CE16F /* AppDelegate.m in Sources */,
 				F59030D71DD5B561009CE16F /* main.m in Sources */,
+				F5D1B6F21DD5ED9900157F7E /* CreateViewController.m in Sources */,
 				F5D1B6E71DD5C4F900157F7E /* RealTimeDocumetDocument.m in Sources */,
 				F5D1B6DF1DD5B9E300157F7E /* DocumentsDataHandler.m in Sources */,
 				F5D1B6E31DD5C38A00157F7E /* RealTimeDocumetUser.m in Sources */,

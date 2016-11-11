@@ -49,6 +49,8 @@ static DocumentsDataHandler *handler;
 
 -(void)observeDocuments {
     [self.documetsRef observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        if (snapshot.value == [NSNull null]) { return; }
+        
         NSArray<NSDictionary *> *documentDicts = [(NSDictionary *)snapshot.value allValues];
         
         self.documents = [RealTimeDocumetDocument documentArrayWithArray:documentDicts];
@@ -56,9 +58,9 @@ static DocumentsDataHandler *handler;
 }
 
 -(void)setDocuments:(NSArray<RealTimeDocumetDocument *> *)documents {
-    [self notifyObserversForActiveDocumentsIfNeededWithOldDocuments:_documents newDocumentsList:documents];
-    
+    NSArray<RealTimeDocumetDocument *> *oldDocumentList = _documents;
     _documents = documents;
+    [self notifyObserversForActiveDocumentsIfNeededWithOldDocuments:oldDocumentList newDocumentsList:documents];
 }
 
 -(void)getDocumentWithId:(NSString *)documentId completionBlock:(void(^)(RealTimeDocumetDocument *document))completionBlock {
@@ -74,14 +76,14 @@ static DocumentsDataHandler *handler;
 
 #pragma mark - Commands
 
--(NSString *)createNewDocumentWithTitle:(NSString *)title userId:(NSString *)userId {
+-(NSString *)createNewDocumentWithTitle:(NSString *)title userId:(NSString *)userId completion:(Completion)completion {
     FIRDatabaseReference *newDocumentRef = [self.documetsRef childByAutoId];
     NSString *newDocumentKey = newDocumentRef.key;
     
     RealTimeDocumetDocument *newDocument = [[RealTimeDocumetDocument alloc] initForCreationWithDocumentId:newDocumentKey title:title creatingUserId:userId];
     
     [newDocumentRef setValue:[newDocument toDictionary] withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
-        
+        if (completion) completion(error);
     }];
     
     return newDocumentKey;
@@ -202,6 +204,8 @@ static DocumentsDataHandler *handler;
 
 -(void)observeJoinRequestsOnDocumentWithId:(NSString *)documentId waitingForApprovalListUpdatedBlock:(UsersCompletionBlock)waitingForApprovalListUpdatedBlock {
     [[[self.documetsRef child:documentId] child:@"users"] observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        if (snapshot.value == [NSNull null]) { return; }
+        
         NSArray<NSDictionary *> *userDicts = [(NSDictionary *)snapshot.value allValues];
         NSArray<RealTimeDocumetUser *> *usersInDocument = [RealTimeDocumetUser usersArrayWithArray:userDicts];
         NSArray<RealTimeDocumetUser *> *requestedUsersInDocument = [self requestedUsersFromListOfUsers:usersInDocument];

@@ -12,6 +12,7 @@
 
 typedef void(^UsersCompletionBlock)(NSArray<RealTimeDocumetUser *> *);
 typedef void(^DocumentCompletionBlock)(NSArray<RealTimeDocumetDocument *> *);
+typedef void(^Completion)(NSError *error);
 
 @interface DocumentsDataHandler : NSObject
 
@@ -21,7 +22,7 @@ typedef void(^DocumentCompletionBlock)(NSArray<RealTimeDocumetDocument *> *);
 
 #pragma mark - Commands
 
--(NSString *)createNewDocumentWithTitle:(NSString *)title userId:(NSString *)userId;
+-(NSString *)createNewDocumentWithTitle:(NSString *)title userId:(NSString *)userId completion:(Completion)completion;
 
 -(void)requestToJoinDocumentWithDocumentId:(NSString *)documentId withUserId:(NSString *)userId;
 

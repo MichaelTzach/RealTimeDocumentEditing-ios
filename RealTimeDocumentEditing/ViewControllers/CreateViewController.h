@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  CreateViewController.h
 //  RealTimeDocumentEditing
 //
 //  Created by Michael Tzach on 11/11/16.
@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface CreateViewController : UIViewController
 
+@property (strong, nonatomic) NSString *currentUserId;
 
 @end
-
