@@ -29,6 +29,7 @@
 @property (strong, nonatomic) NSString *documentId;
 @property (strong, nonatomic) RealTimeDocumetDocument *document;
 
+@property (nonatomic) BOOL preventResigningActiveState;
 
 @end
 
@@ -39,6 +40,8 @@
     if (self) {
         self.userId = editingUserId;
         self.documentId = documentId;
+        
+        self.preventResigningActiveState = NO;
     }
     return self;
 }
@@ -93,12 +96,14 @@
 }
 
 -(void)registerForRequestingUsersOnDocument {
-    [[DocumentsDataHandler handler] observeNewJoinRequestsOnDocumentWithId:self.documentId waitingForApprovalListUpdatedBlock:^(NSArray<RealTimeDocumetUser *> *requestingUsers) {
+    [[DocumentsDataHandler handler] observeNewJoinRequestsOnDocumentWithId:self.documentId userWaitingForApproval:^(RealTimeDocumetUser *requstingUser) {
         if (self.statusBarNotification.notificationIsShowing || self.statusBarNotification.notificationIsDismissing) {
             return;
         }
         
-        [self.statusBarNotification displayNotificationWithMessage:@"There are new users waiting for approval" forDuration:4.0];
+        NSString *requstString = [NSString stringWithFormat:@"%@ requsted to join document", requstingUser.username];
+        
+        [self.statusBarNotification displayNotificationWithMessage:requstString forDuration:4.0];
     }];
 }
 
@@ -149,19 +154,28 @@
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [[DocumentsDataHandler handler] becomeActiveOnDocumentId:self.documentId withUserId:self.userId];
+    if (!self.preventResigningActiveState) {
+        [[DocumentsDataHandler handler] becomeActiveOnDocumentId:self.documentId withUserId:self.userId];
+    }
+    self.preventResigningActiveState = NO;
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    [[DocumentsDataHandler handler] leaveDocumentWithDocumentId:self.documentId withUserId:self.userId];
+    if (!self.preventResigningActiveState) {
+        [[DocumentsDataHandler handler] leaveDocumentWithDocumentId:self.documentId withUserId:self.userId];
+    }
 }
 
 -(void)authorsOnDocumentPressed {
+    self.preventResigningActiveState = YES;
+    
     UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
     UsersInDocumentTableViewController *vc = [sb instantiateViewControllerWithIdentifier:@"UsersInDocumentTableViewController"];
+    
     vc.documentId = self.documentId;
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
 

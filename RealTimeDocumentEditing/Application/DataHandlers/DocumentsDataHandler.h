@@ -11,6 +11,8 @@
 @class RealTimeDocumetDocument;
 
 typedef void(^UsersCompletionBlock)(NSArray<RealTimeDocumetUser *> *);
+typedef void(^SingleUsersCompletionBlock)(RealTimeDocumetUser *);
+
 typedef void(^DocumentCompletionBlock)(NSArray<RealTimeDocumetDocument *> *);
 typedef void(^SingleDocumentCompletionBlock)(RealTimeDocumetDocument *);
 typedef void(^Completion)(NSError *error);
@@ -45,7 +47,7 @@ typedef void(^Completion)(NSError *error);
 
 -(void)observeDocumentsWithUpdateBlock:(DocumentCompletionBlock)updateBlock;
 
--(void)observeNewJoinRequestsOnDocumentWithId:(NSString *)documentId waitingForApprovalListUpdatedBlock:(UsersCompletionBlock)waitingForApprovalListUpdatedBlock;
+-(void)observeNewJoinRequestsOnDocumentWithId:(NSString *)documentId userWaitingForApproval:(SingleUsersCompletionBlock)userWaitingForApproval;
 
 -(void)observeDocumentWithId:(NSString *)documentId updateBlock:(SingleDocumentCompletionBlock)updateBlock;
 

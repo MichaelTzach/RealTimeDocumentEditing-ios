@@ -48,7 +48,10 @@ static DocumentsDataHandler *handler;
 
 -(void)observeDocuments {
     [self.documetsRef observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-        if (snapshot.value == [NSNull null]) { return; }
+        if (snapshot.value == [NSNull null]) {
+            self.documents = [[NSArray alloc] init];
+            return;
+        }
         
         NSArray<NSDictionary *> *documentDicts = [(NSDictionary *)snapshot.value allValues];
     
@@ -194,14 +197,15 @@ static DocumentsDataHandler *handler;
     }
 }
 
--(void)observeNewJoinRequestsOnDocumentWithId:(NSString *)documentId waitingForApprovalListUpdatedBlock:(UsersCompletionBlock)waitingForApprovalListUpdatedBlock {
+-(void)observeNewJoinRequestsOnDocumentWithId:(NSString *)documentId userWaitingForApproval:(SingleUsersCompletionBlock)userWaitingForApproval {
     [[[self.documetsRef child:documentId] child:@"users"] observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         if (snapshot.value == [NSNull null]) { return; }
         
-        NSArray<NSDictionary *> *userDicts = [(NSDictionary *)snapshot.value allValues];
-        NSArray<RealTimeDocumetUser *> *usersInDocument = [RealTimeDocumetUser usersArrayWithArray:userDicts];
-        NSArray<RealTimeDocumetUser *> *requestedUsersInDocument = [self requestedUsersFromListOfUsers:usersInDocument];
-        waitingForApprovalListUpdatedBlock(requestedUsersInDocument);
+        NSDictionary *userDict = snapshot.value;
+        RealTimeDocumetUser *userAdded = [[RealTimeDocumetUser alloc] initWithDictionary:userDict error:nil];
+        if (userAdded.status == RealTimeDocumetUserStatusRequested) {
+            userWaitingForApproval(userAdded);
+        }
     }];
 }
 
@@ -225,7 +229,7 @@ static DocumentsDataHandler *handler;
     [[[self.documetsRef child:documentId] child:@"users"] observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         if (snapshot.value == [NSNull null]) { return; }
         
-        NSArray<NSDictionary *> *userDicts = [(NSDictionary *)snapshot.value allValues];
+        NSArray<NSDictionary *> *userDicts = snapshot.value;
         NSArray<RealTimeDocumetUser *> *usersInDocument = [RealTimeDocumetUser usersArrayWithArray:userDicts];
         updateBlock(usersInDocument);
     }];
