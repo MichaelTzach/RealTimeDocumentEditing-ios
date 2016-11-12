@@ -14,6 +14,7 @@
 @interface DocumentsDataHandler()
 
 @property (strong, nonatomic) FIRDatabaseReference *documetsRef;
+@property (strong, nonatomic) FIRDatabaseReference *cursorsRef;
 @property (strong, nonatomic) NSArray<RealTimeDocumetDocument *> *documents;
 
 @property (strong, nonatomic) NSMutableArray<DocumentCompletionBlock> *documentListeners;
@@ -36,6 +37,7 @@ static DocumentsDataHandler *handler;
     self = [super init];
     if (self) {
         self.documetsRef = [[[FIRDatabase database] reference] child:@"documents"];
+        self.cursorsRef = [[[FIRDatabase database] reference] child:@"cursors"];
         
         self.documentListeners = [[NSMutableArray alloc] init];
         
@@ -183,7 +185,28 @@ static DocumentsDataHandler *handler;
     [[[self.documetsRef child:documentId] child:@"title"] setValue:newTitle];
 }
 
+-(void)changeCursorLocationForDocumntId:(NSString *)documentId userId:(NSString *)userId newLocation:(NSInteger)newLocation {
+    if (newLocation >= 0) {
+        [[[self.cursorsRef child:documentId] child:userId] setValue:@(newLocation)];
+    } else {
+        [[[self.cursorsRef child:documentId] child:userId] removeValue];
+    }
+}
+
 #pragma mark - Observers
+
+-(void)observeCursorsOnDocumentWithId:(NSString *)documentId updateBlock:(void(^)(NSDictionary<NSString *, NSNumber *> *))updateBlock {
+    [[self.cursorsRef child:documentId] observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        if (snapshot.value == [NSNull null]) {
+            updateBlock([[NSDictionary alloc] init]);
+            return;
+        }
+        
+        NSDictionary<NSString *, NSNumber *> *userIdsToLocs = snapshot.value;
+        
+        updateBlock(userIdsToLocs);
+    }];
+}
 
 -(void)observeDocumentsWithUpdateBlock:(DocumentCompletionBlock)updateBlock {
     updateBlock(self.documents);

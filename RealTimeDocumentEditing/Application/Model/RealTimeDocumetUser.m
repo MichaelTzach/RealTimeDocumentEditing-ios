@@ -15,7 +15,6 @@
     if (self) {
         self.userId = userId;
         self.username = username;
-        self.cursorPosition = 0;
     }
     return self;
 }

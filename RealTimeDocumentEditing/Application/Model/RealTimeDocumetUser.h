@@ -22,8 +22,7 @@ typedef enum {
 
 @property (strong, nonatomic) NSString *userId;
 @property (strong, nonatomic) NSString *username;
-@property (nonatomic) RealTimeDocumetUserStatus status;
-@property (nonatomic) NSUInteger cursorPosition;
+@property (nonatomic, assign) RealTimeDocumetUserStatus status;
 
 +(NSArray<RealTimeDocumetUser *> *)usersArrayWithArray:(NSArray<NSDictionary *> *)array;
 

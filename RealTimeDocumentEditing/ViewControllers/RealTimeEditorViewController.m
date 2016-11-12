@@ -27,7 +27,9 @@
 //State
 @property (strong, nonatomic) NSString *userId;
 @property (strong, nonatomic) NSString *documentId;
+
 @property (strong, nonatomic) RealTimeDocumetDocument *document;
+@property (strong, nonatomic) NSDictionary<NSString *, NSNumber *> *userIdToCursorLocation;
 
 @property (nonatomic) BOOL preventResigningActiveState;
 
@@ -71,6 +73,7 @@
     
     [self registerForRequestingUsersOnDocument];
     [self registerForUpdatesOnDocument];
+    [self registerForCursorUpdatesOnDocument];
 }
 
 -(void)viewDidLayoutSubviews {
@@ -111,6 +114,18 @@
     [[DocumentsDataHandler handler] observeDocumentWithId:self.documentId updateBlock:^(RealTimeDocumetDocument *document) {
         self.document = document;
     }];
+}
+
+-(void)registerForCursorUpdatesOnDocument {
+    [[DocumentsDataHandler handler] observeCursorsOnDocumentWithId:self.documentId updateBlock:^(NSDictionary<NSString *,NSNumber *> *userIdToUserLoc) {
+        self.userIdToCursorLocation = userIdToUserLoc;
+    }];
+}
+
+-(void)setUserIdToCursorLocation:(NSDictionary<NSString *,NSNumber *> *)userIdToCursorLocation {
+    _userIdToCursorLocation = userIdToCursorLocation;
+    
+    //TODO
 }
 
 -(void)setDocument:(RealTimeDocumetDocument *)document {
@@ -187,6 +202,22 @@
     }
     
     [[DocumentsDataHandler handler] editBodyForDocumentWithId:self.documentId newBody:self.bodyTextView.text];
+}
+
+-(void)textViewDidChangeSelection:(UITextView *)textView {
+    NSInteger loc = [textView offsetFromPosition:textView.beginningOfDocument toPosition:textView.selectedTextRange.start];
+    
+    [[DocumentsDataHandler handler] changeCursorLocationForDocumntId:self.documentId userId:self.userId newLocation:loc];
+}
+
+-(void)textViewDidEndEditing:(UITextView *)textView {
+    [[DocumentsDataHandler handler] changeCursorLocationForDocumntId:self.documentId userId:self.userId newLocation:-1];
+}
+
+-(void)textViewDidBeginEditing:(UITextView *)textView {
+    NSInteger loc = [textView offsetFromPosition:textView.beginningOfDocument toPosition:textView.selectedTextRange.start];
+    
+    [[DocumentsDataHandler handler] changeCursorLocationForDocumntId:self.documentId userId:self.userId newLocation:loc];
 }
 
 #pragma mark - UITextFieldDelegate

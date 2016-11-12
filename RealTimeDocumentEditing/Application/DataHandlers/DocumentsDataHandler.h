@@ -43,7 +43,11 @@ typedef void(^Completion)(NSError *error);
 
 -(void)editTitleForDocumentWithId:(NSString *)documentId newTitle:(NSString *)newTitle;
 
+-(void)changeCursorLocationForDocumntId:(NSString *)documentId userId:(NSString *)userId newLocation:(NSInteger)newLocation;
+
 #pragma mark - Observers
+
+-(void)observeCursorsOnDocumentWithId:(NSString *)documentId updateBlock:(void(^)(NSDictionary<NSString *, NSNumber *> *))updateBlock;
 
 -(void)observeDocumentsWithUpdateBlock:(DocumentCompletionBlock)updateBlock;
 
