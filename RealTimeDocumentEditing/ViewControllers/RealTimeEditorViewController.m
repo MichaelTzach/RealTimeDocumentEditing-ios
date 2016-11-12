@@ -13,8 +13,9 @@
 #import "CWStatusBarNotification.h"
 #import "TextDiffCalc.h"
 #import "UsersInDocumentTableViewController.h"
+#import "CursorViewsManager.h"
 
-@interface RealTimeEditorViewController () <UITextViewDelegate>
+@interface RealTimeEditorViewController () <UITextViewDelegate, CursorViewsManagerDelegate>
 
 //Views
 @property (strong, nonatomic) CWStatusBarNotification *statusBarNotification;
@@ -24,6 +25,8 @@
 @property (strong, nonatomic) UIView *seperatorView;
 @property (strong, nonatomic) UITextView *bodyTextView;
 
+@property (strong, nonatomic) NSMutableDictionary<NSString *, UIView *> *cursorViews;
+
 //State
 @property (strong, nonatomic) NSString *userId;
 @property (strong, nonatomic) NSString *documentId;
@@ -32,6 +35,9 @@
 @property (strong, nonatomic) NSDictionary<NSString *, NSNumber *> *userIdToCursorLocation;
 
 @property (nonatomic) BOOL preventResigningActiveState;
+
+//Helpers
+@property (strong, nonatomic) CursorViewsManager *cursorManager;
 
 @end
 
@@ -44,6 +50,8 @@
         self.documentId = documentId;
         
         self.preventResigningActiveState = NO;
+        
+        self.userIdToCursorLocation = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -69,6 +77,7 @@
     
     self.bodyTextView = [[UITextView alloc] init];
     self.bodyTextView.delegate = self;
+    self.bodyTextView.font = [UIFont systemFontOfSize:16.0];
     [self.view addSubview:self.bodyTextView];
     
     [self registerForRequestingUsersOnDocument];
@@ -125,7 +134,38 @@
 -(void)setUserIdToCursorLocation:(NSDictionary<NSString *,NSNumber *> *)userIdToCursorLocation {
     _userIdToCursorLocation = userIdToCursorLocation;
     
-    //TODO
+    [self updateCursorManagerDependingOnActiveUsersAndCursors];
+}
+
+-(void)updateCursorManagerDependingOnActiveUsersAndCursors {
+    NSMutableArray<CursorViewManagerModel *> *cursorModels = [[NSMutableArray alloc] init];
+    NSArray<NSString *> *activeUserIds = [self activeUserIdsInDocumentThatAreNotCurrentUser];
+    
+    [self.userIdToCursorLocation enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull userId, NSNumber * _Nonnull userLoc, BOOL * _Nonnull stop) {
+        if ([activeUserIds containsObject:userId]) {
+            CGPoint topPoint = [CursorViewsManager topOfCursorLocationFromLocation:userLoc inTextView:self.bodyTextView];
+            
+            CursorViewManagerModel *model = [[CursorViewManagerModel alloc] init];
+            model.userId = userId;
+            model.topPoint = topPoint;
+            
+            [cursorModels addObject:model];
+        }
+    }];
+    
+    [self.cursorManager updateCursors:cursorModels];
+}
+
+-(NSArray<NSString *> *)activeUserIdsInDocumentThatAreNotCurrentUser {
+    NSMutableArray<NSString *> *activeUserIds = [[NSMutableArray alloc] init];
+    
+    for (RealTimeDocumetUser *user in self.document.users) {
+        if (user.status == RealTimeDocumetUserStatusActive && ![user.userId isEqualToString:self.userId]) {
+            [activeUserIds addObject:user.userId];
+        }
+    }
+    
+    return activeUserIds;
 }
 
 -(void)setDocument:(RealTimeDocumetDocument *)document {
@@ -136,6 +176,8 @@
     [self setAuthorsOnDocumentImageDependingOnState];
     [self setTitleDependingOnOldDocument:oldDoc newDocument:document];
     [self setBodyDependingOnOldDocument:oldDoc newDocument:document];
+    
+    [self updateCursorManagerDependingOnActiveUsersAndCursors];
 }
 
 -(void)setTitleDependingOnOldDocument:(RealTimeDocumetDocument *)oldDocument newDocument:(RealTimeDocumetDocument *)newDocument {
@@ -205,9 +247,11 @@
 }
 
 -(void)textViewDidChangeSelection:(UITextView *)textView {
-    NSInteger loc = [textView offsetFromPosition:textView.beginningOfDocument toPosition:textView.selectedTextRange.start];
-    
-    [[DocumentsDataHandler handler] changeCursorLocationForDocumntId:self.documentId userId:self.userId newLocation:loc];
+    if (textView.isFirstResponder) {
+        NSInteger loc = [textView offsetFromPosition:textView.beginningOfDocument toPosition:textView.selectedTextRange.start];
+        
+        [[DocumentsDataHandler handler] changeCursorLocationForDocumntId:self.documentId userId:self.userId newLocation:loc];
+    }
 }
 
 -(void)textViewDidEndEditing:(UITextView *)textView {
@@ -228,6 +272,22 @@
     }
     
     [[DocumentsDataHandler handler] editTitleForDocumentWithId:self.documentId newTitle:self.titleTextField.text];
+}
+
+#pragma mark - CursorViewsManagerDelegate
+
+-(void)addViewToContainer:(UIView *)viewToAdd {
+    [self.bodyTextView addSubview:viewToAdd];
+}
+
+#pragma mark - Lazy inits
+
+-(CursorViewsManager *)cursorManager {
+    if (!_cursorManager) {
+        _cursorManager = [[CursorViewsManager alloc] init];
+        _cursorManager.delegate = self;
+    }
+    return _cursorManager;
 }
 
 @end

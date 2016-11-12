@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		DCAAF0CE86C0626C56A8CC34 /* libPods-RealTimeDocumentEditing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 935C1776D4D76A8593CB4C93 /* libPods-RealTimeDocumentEditing.a */; };
+		F569D12B1DD7A939004D7326 /* CursorViewsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F569D12A1DD7A939004D7326 /* CursorViewsManager.m */; };
+		F569D12E1DD7AF71004D7326 /* CursorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F569D12D1DD7AF71004D7326 /* CursorView.m */; };
 		F59030D71DD5B561009CE16F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F59030D61DD5B561009CE16F /* main.m */; };
 		F59030DA1DD5B561009CE16F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F59030D91DD5B561009CE16F /* AppDelegate.m */; };
 		F59030E01DD5B561009CE16F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F59030DE1DD5B561009CE16F /* Main.storyboard */; };
@@ -31,6 +33,10 @@
 		30CF26F7AE0F7BD904E4A171 /* Pods-RealTimeDocumentEditing.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealTimeDocumentEditing.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RealTimeDocumentEditing/Pods-RealTimeDocumentEditing.debug.xcconfig"; sourceTree = "<group>"; };
 		558A6FF074254B102E0AF2E2 /* Pods-RealTimeDocumentEditing.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealTimeDocumentEditing.release.xcconfig"; path = "Pods/Target Support Files/Pods-RealTimeDocumentEditing/Pods-RealTimeDocumentEditing.release.xcconfig"; sourceTree = "<group>"; };
 		935C1776D4D76A8593CB4C93 /* libPods-RealTimeDocumentEditing.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RealTimeDocumentEditing.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F569D1291DD7A939004D7326 /* CursorViewsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CursorViewsManager.h; path = ViewControllers/Delegates/CursorViewsManager.h; sourceTree = "<group>"; };
+		F569D12A1DD7A939004D7326 /* CursorViewsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CursorViewsManager.m; path = ViewControllers/Delegates/CursorViewsManager.m; sourceTree = "<group>"; };
+		F569D12C1DD7AF71004D7326 /* CursorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CursorView.h; path = ViewControllers/Views/CursorView.h; sourceTree = "<group>"; };
+		F569D12D1DD7AF71004D7326 /* CursorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CursorView.m; path = ViewControllers/Views/CursorView.m; sourceTree = "<group>"; };
 		F59030D21DD5B561009CE16F /* RealTimeDocumentEditing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RealTimeDocumentEditing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F59030D61DD5B561009CE16F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F59030D81DD5B561009CE16F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -91,6 +97,15 @@
 				558A6FF074254B102E0AF2E2 /* Pods-RealTimeDocumentEditing.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		F569D12F1DD7B361004D7326 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				F569D1291DD7A939004D7326 /* CursorViewsManager.h */,
+				F569D12A1DD7A939004D7326 /* CursorViewsManager.m */,
+			);
+			name = Delegates;
 			sourceTree = "<group>";
 		};
 		F59030C91DD5B561009CE16F = {
@@ -180,6 +195,7 @@
 				F5D1B6F71DD7055700157F7E /* JoinDocumentTableViewController.m */,
 				F5D1B7031DD7552300157F7E /* UsersInDocumentTableViewController.h */,
 				F5D1B7041DD7552400157F7E /* UsersInDocumentTableViewController.m */,
+				F569D12F1DD7B361004D7326 /* Delegates */,
 				F5D1B6FC1DD70A3B00157F7E /* Views */,
 			);
 			name = ViewControllers;
@@ -192,6 +208,8 @@
 				F5D1B6FA1DD70A3800157F7E /* JoinDocumentTableViewCell.m */,
 				F5D1B7001DD751A800157F7E /* UsersInDocumentTableViewCell.h */,
 				F5D1B7011DD751A800157F7E /* UsersInDocumentTableViewCell.m */,
+				F569D12C1DD7AF71004D7326 /* CursorView.h */,
+				F569D12D1DD7AF71004D7326 /* CursorView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -326,10 +344,12 @@
 				F5D1B6F51DD643B700157F7E /* RealTimeEditorViewController.m in Sources */,
 				F59030D71DD5B561009CE16F /* main.m in Sources */,
 				F5D1B6F21DD5ED9900157F7E /* CreateViewController.m in Sources */,
+				F569D12B1DD7A939004D7326 /* CursorViewsManager.m in Sources */,
 				F5D1B6E71DD5C4F900157F7E /* RealTimeDocumetDocument.m in Sources */,
 				F5D1B7051DD7552400157F7E /* UsersInDocumentTableViewController.m in Sources */,
 				F5D1B6FF1DD73B0D00157F7E /* TextDiffCalc.m in Sources */,
 				F5D1B7021DD751A800157F7E /* UsersInDocumentTableViewCell.m in Sources */,
+				F569D12E1DD7AF71004D7326 /* CursorView.m in Sources */,
 				F5D1B6DF1DD5B9E300157F7E /* DocumentsDataHandler.m in Sources */,
 				F5D1B6FB1DD70A3800157F7E /* JoinDocumentTableViewCell.m in Sources */,
 				F5D1B6E31DD5C38A00157F7E /* RealTimeDocumetUser.m in Sources */,
