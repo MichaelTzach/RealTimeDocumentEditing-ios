@@ -15,13 +15,14 @@
     return YES;
 }
 
--(instancetype)initForCreationWithDocumentId:(NSString *)documentId title:(NSString *)title creatingUserId:(NSString *)creatingUserId {
+-(instancetype)initForCreationWithDocumentId:(NSString *)documentId title:(NSString *)title creatingUserId:(NSString *)creatingUserId creatingUserName:(NSString *)creatingUserName {
     self = [super init];
     if (self) {
         self.documentId = documentId;
         self.title = title;
         self.body = @"";
-        self.users = @[[RealTimeDocumetUser userForCreatorWithUserId:creatingUserId]];
+        self.users = @[[RealTimeDocumetUser userForCreatorWithUserId:creatingUserId username:creatingUserName]];
+        self.state = RealTimeDocumetStateOpen;
     }
     return self;
 }
@@ -53,7 +54,9 @@
     NSMutableArray<RealTimeDocumetDocument *> *docsArray = [[NSMutableArray alloc] init];
     for (NSDictionary *docDict in array) {
         RealTimeDocumetDocument *newDoc = [[RealTimeDocumetDocument alloc] initWithDictionary:docDict error:nil];
-        [docsArray addObject:newDoc];
+        if (newDoc) {
+            [docsArray addObject:newDoc];
+        }
     }
     return [docsArray copy];
 }

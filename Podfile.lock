@@ -1,4 +1,5 @@
 PODS:
+  - CWStatusBarNotification (2.3.5)
   - Firebase/Core (3.7.1):
     - FirebaseAnalytics (= 3.4.4)
     - FirebaseCore (= 3.4.3)
@@ -24,11 +25,13 @@ PODS:
   - JSONModel (1.7.0)
 
 DEPENDENCIES:
+  - CWStatusBarNotification (~> 2.3.5)
   - Firebase/Core
   - Firebase/Database
   - JSONModel
 
 SPEC CHECKSUMS:
+  CWStatusBarNotification: 3d2738b25c3207f60cc50201388d3c96182545ff
   Firebase: be473484f0d515e72ffd04acf22f981773c23e58
   FirebaseAnalytics: 0533a00b681e08fd0b2cd0444b7ddf0ef9fd7a1a
   FirebaseCore: 5a885548bbc5f0c410b04f8e9ac9d73ff1221907
@@ -39,6 +42,6 @@ SPEC CHECKSUMS:
   GoogleUtilities: 8bbc733218aad26306f9d4a253823986110e3358
   JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
 
-PODFILE CHECKSUM: 8f84d99ff38e0001057c0415ac0399fabff84a6b
+PODFILE CHECKSUM: 9456711c56e33ce967c5c9983db36c4789edf980
 
 COCOAPODS: 1.1.0.rc.2

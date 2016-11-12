@@ -8,6 +8,7 @@
 
 #import "CreateViewController.h"
 #import "DocumentsDataHandler.h"
+#import "RealTimeEditorViewController.h"
 
 @interface CreateViewController ()
 
@@ -42,9 +43,11 @@
     NSString *documentTitle = self.titleTextField.text;
     
     self.isCreating = YES;
-    __block NSString *createDocumentId = [[DocumentsDataHandler handler] createNewDocumentWithTitle:documentTitle userId:userId completion:^(NSError *error) {
+    __block NSString *createdDocumentId = [[DocumentsDataHandler handler] createNewDocumentWithTitle:documentTitle userId:userId creatingUserName:self.currentUserName completion:^(NSError *error) {
         self.isCreating = NO;
-        NSLog(@"Created %@", createDocumentId);
+
+        RealTimeEditorViewController *documentEditor = [[RealTimeEditorViewController alloc] initWithEditingUserId:self.currentUserId documentId:createdDocumentId];
+        [self.navigationController pushViewController:documentEditor animated:YES];
     }];
 }
 

@@ -19,6 +19,12 @@
 		F5D1B6E71DD5C4F900157F7E /* RealTimeDocumetDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D1B6E61DD5C4F900157F7E /* RealTimeDocumetDocument.m */; };
 		F5D1B6EF1DD5ED4A00157F7E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D1B6EE1DD5ED4A00157F7E /* ViewController.m */; };
 		F5D1B6F21DD5ED9900157F7E /* CreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D1B6F11DD5ED9900157F7E /* CreateViewController.m */; };
+		F5D1B6F51DD643B700157F7E /* RealTimeEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D1B6F41DD643B700157F7E /* RealTimeEditorViewController.m */; };
+		F5D1B6F81DD7055700157F7E /* JoinDocumentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D1B6F71DD7055700157F7E /* JoinDocumentTableViewController.m */; };
+		F5D1B6FB1DD70A3800157F7E /* JoinDocumentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D1B6FA1DD70A3800157F7E /* JoinDocumentTableViewCell.m */; };
+		F5D1B6FF1DD73B0D00157F7E /* TextDiffCalc.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D1B6FE1DD73B0D00157F7E /* TextDiffCalc.m */; };
+		F5D1B7021DD751A800157F7E /* UsersInDocumentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D1B7011DD751A800157F7E /* UsersInDocumentTableViewCell.m */; };
+		F5D1B7051DD7552400157F7E /* UsersInDocumentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D1B7041DD7552400157F7E /* UsersInDocumentTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +50,18 @@
 		F5D1B6EE1DD5ED4A00157F7E /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = ViewControllers/ViewController.m; sourceTree = "<group>"; };
 		F5D1B6F01DD5ED9900157F7E /* CreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateViewController.h; path = ViewControllers/CreateViewController.h; sourceTree = "<group>"; };
 		F5D1B6F11DD5ED9900157F7E /* CreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreateViewController.m; path = ViewControllers/CreateViewController.m; sourceTree = "<group>"; };
+		F5D1B6F31DD643B700157F7E /* RealTimeEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RealTimeEditorViewController.h; path = ViewControllers/RealTimeEditorViewController.h; sourceTree = "<group>"; };
+		F5D1B6F41DD643B700157F7E /* RealTimeEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RealTimeEditorViewController.m; path = ViewControllers/RealTimeEditorViewController.m; sourceTree = "<group>"; };
+		F5D1B6F61DD7055700157F7E /* JoinDocumentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JoinDocumentTableViewController.h; path = ViewControllers/JoinDocumentTableViewController.h; sourceTree = "<group>"; };
+		F5D1B6F71DD7055700157F7E /* JoinDocumentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JoinDocumentTableViewController.m; path = ViewControllers/JoinDocumentTableViewController.m; sourceTree = "<group>"; };
+		F5D1B6F91DD70A3800157F7E /* JoinDocumentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JoinDocumentTableViewCell.h; path = ViewControllers/Views/JoinDocumentTableViewCell.h; sourceTree = "<group>"; };
+		F5D1B6FA1DD70A3800157F7E /* JoinDocumentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JoinDocumentTableViewCell.m; path = ViewControllers/Views/JoinDocumentTableViewCell.m; sourceTree = "<group>"; };
+		F5D1B6FD1DD73B0D00157F7E /* TextDiffCalc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextDiffCalc.h; path = Application/Logic/TextDiffCalc.h; sourceTree = "<group>"; };
+		F5D1B6FE1DD73B0D00157F7E /* TextDiffCalc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TextDiffCalc.m; path = Application/Logic/TextDiffCalc.m; sourceTree = "<group>"; };
+		F5D1B7001DD751A800157F7E /* UsersInDocumentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UsersInDocumentTableViewCell.h; path = ViewControllers/Views/UsersInDocumentTableViewCell.h; sourceTree = "<group>"; };
+		F5D1B7011DD751A800157F7E /* UsersInDocumentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UsersInDocumentTableViewCell.m; path = ViewControllers/Views/UsersInDocumentTableViewCell.m; sourceTree = "<group>"; };
+		F5D1B7031DD7552300157F7E /* UsersInDocumentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UsersInDocumentTableViewController.h; path = ViewControllers/UsersInDocumentTableViewController.h; sourceTree = "<group>"; };
+		F5D1B7041DD7552400157F7E /* UsersInDocumentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UsersInDocumentTableViewController.m; path = ViewControllers/UsersInDocumentTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +136,8 @@
 			children = (
 				F5D1B6DD1DD5B9E300157F7E /* DocumentsDataHandler.h */,
 				F5D1B6DE1DD5B9E300157F7E /* DocumentsDataHandler.m */,
+				F5D1B6FD1DD73B0D00157F7E /* TextDiffCalc.h */,
+				F5D1B6FE1DD73B0D00157F7E /* TextDiffCalc.m */,
 			);
 			name = DataHandlers;
 			sourceTree = "<group>";
@@ -154,8 +174,26 @@
 				F5D1B6EE1DD5ED4A00157F7E /* ViewController.m */,
 				F5D1B6F01DD5ED9900157F7E /* CreateViewController.h */,
 				F5D1B6F11DD5ED9900157F7E /* CreateViewController.m */,
+				F5D1B6F31DD643B700157F7E /* RealTimeEditorViewController.h */,
+				F5D1B6F41DD643B700157F7E /* RealTimeEditorViewController.m */,
+				F5D1B6F61DD7055700157F7E /* JoinDocumentTableViewController.h */,
+				F5D1B6F71DD7055700157F7E /* JoinDocumentTableViewController.m */,
+				F5D1B7031DD7552300157F7E /* UsersInDocumentTableViewController.h */,
+				F5D1B7041DD7552400157F7E /* UsersInDocumentTableViewController.m */,
+				F5D1B6FC1DD70A3B00157F7E /* Views */,
 			);
 			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		F5D1B6FC1DD70A3B00157F7E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F5D1B6F91DD70A3800157F7E /* JoinDocumentTableViewCell.h */,
+				F5D1B6FA1DD70A3800157F7E /* JoinDocumentTableViewCell.m */,
+				F5D1B7001DD751A800157F7E /* UsersInDocumentTableViewCell.h */,
+				F5D1B7011DD751A800157F7E /* UsersInDocumentTableViewCell.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -282,12 +320,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5D1B6F81DD7055700157F7E /* JoinDocumentTableViewController.m in Sources */,
 				F5D1B6EF1DD5ED4A00157F7E /* ViewController.m in Sources */,
 				F59030DA1DD5B561009CE16F /* AppDelegate.m in Sources */,
+				F5D1B6F51DD643B700157F7E /* RealTimeEditorViewController.m in Sources */,
 				F59030D71DD5B561009CE16F /* main.m in Sources */,
 				F5D1B6F21DD5ED9900157F7E /* CreateViewController.m in Sources */,
 				F5D1B6E71DD5C4F900157F7E /* RealTimeDocumetDocument.m in Sources */,
+				F5D1B7051DD7552400157F7E /* UsersInDocumentTableViewController.m in Sources */,
+				F5D1B6FF1DD73B0D00157F7E /* TextDiffCalc.m in Sources */,
+				F5D1B7021DD751A800157F7E /* UsersInDocumentTableViewCell.m in Sources */,
 				F5D1B6DF1DD5B9E300157F7E /* DocumentsDataHandler.m in Sources */,
+				F5D1B6FB1DD70A3800157F7E /* JoinDocumentTableViewCell.m in Sources */,
 				F5D1B6E31DD5C38A00157F7E /* RealTimeDocumetUser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

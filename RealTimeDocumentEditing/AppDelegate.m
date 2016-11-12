@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 @import Firebase;
+#import "DocumentsDataHandler.h"
 
 @interface AppDelegate ()
 
@@ -20,6 +21,7 @@
     // Override point for customization after application launch.
     
     [FIRApp configure];
+    [DocumentsDataHandler initialize];
     
     return YES;
 }

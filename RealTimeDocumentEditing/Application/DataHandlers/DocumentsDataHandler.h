@@ -12,6 +12,7 @@
 
 typedef void(^UsersCompletionBlock)(NSArray<RealTimeDocumetUser *> *);
 typedef void(^DocumentCompletionBlock)(NSArray<RealTimeDocumetDocument *> *);
+typedef void(^SingleDocumentCompletionBlock)(RealTimeDocumetDocument *);
 typedef void(^Completion)(NSError *error);
 
 @interface DocumentsDataHandler : NSObject
@@ -20,11 +21,11 @@ typedef void(^Completion)(NSError *error);
 
 +(DocumentsDataHandler *)handler;
 
-#pragma mark - Commands
+#pragma mark - Commands for join and create
 
--(NSString *)createNewDocumentWithTitle:(NSString *)title userId:(NSString *)userId completion:(Completion)completion;
+-(NSString *)createNewDocumentWithTitle:(NSString *)title userId:(NSString *)userId creatingUserName:(NSString *)creatingUserName completion:(Completion)completion;
 
--(void)requestToJoinDocumentWithDocumentId:(NSString *)documentId withUserId:(NSString *)userId;
+-(void)requestToJoinDocumentWithDocumentId:(NSString *)documentId withUserId:(NSString *)userId requestingUserName:(NSString *)requestingUserName;
 
 -(void)becomeActiveOnDocumentId:(NSString *)documentId withUserId:(NSString *)userId;
 
@@ -34,10 +35,20 @@ typedef void(^Completion)(NSError *error);
 
 -(void)rejectUserWithId:(NSString *)userId toWorkOnDocumentWithId:(NSString *)documentId;
 
+#pragma mark - Commands for edit
+
+-(void)editBodyForDocumentWithId:(NSString *)documentId newBody:(NSString *)newBody;
+
+-(void)editTitleForDocumentWithId:(NSString *)documentId newTitle:(NSString *)newTitle;
+
 #pragma mark - Observers
 
--(void)observeActiveDocumentsWithUpdateBlock:(DocumentCompletionBlock)updateBlock;
+-(void)observeDocumentsWithUpdateBlock:(DocumentCompletionBlock)updateBlock;
 
--(void)observeJoinRequestsOnDocumentWithId:(NSString *)documentId waitingForApprovalListUpdatedBlock:(UsersCompletionBlock)waitingForApprovalListUpdatedBlock;
+-(void)observeNewJoinRequestsOnDocumentWithId:(NSString *)documentId waitingForApprovalListUpdatedBlock:(UsersCompletionBlock)waitingForApprovalListUpdatedBlock;
+
+-(void)observeDocumentWithId:(NSString *)documentId updateBlock:(SingleDocumentCompletionBlock)updateBlock;
+
+-(void)observeDocumentUsersWithDocumentId:(NSString *)documentId updateBlock:(UsersCompletionBlock)updateBlock;
 
 @end

@@ -10,23 +10,24 @@
 
 @implementation RealTimeDocumetUser
 
--(instancetype)initWithUserId:(NSString *)userId {
+-(instancetype)initWithUserId:(NSString *)userId username:(NSString *)username {
     self = [super init];
     if (self) {
         self.userId = userId;
+        self.username = username;
         self.cursorPosition = 0;
     }
     return self;
 }
 
-+(RealTimeDocumetUser *)userForCreatorWithUserId:(NSString *)userId {
-    RealTimeDocumetUser *user = [[RealTimeDocumetUser alloc] initWithUserId:userId];
++(RealTimeDocumetUser *)userForCreatorWithUserId:(NSString *)userId username:(NSString *)username {
+    RealTimeDocumetUser *user = [[RealTimeDocumetUser alloc] initWithUserId:userId username:username];
     user.status = RealTimeDocumetUserStatusApproved;
     return user;
 }
 
-+(RealTimeDocumetUser *)userForRequestWithUserId:(NSString *)userId {
-    RealTimeDocumetUser *user = [[RealTimeDocumetUser alloc] initWithUserId:userId];
++(RealTimeDocumetUser *)userForRequestWithUserId:(NSString *)userId username:(NSString *)username {
+    RealTimeDocumetUser *user = [[RealTimeDocumetUser alloc] initWithUserId:userId username:username];
     user.status = RealTimeDocumetUserStatusRequested;
     return user;
 }
@@ -35,7 +36,9 @@
     NSMutableArray<RealTimeDocumetUser *> *usersArray = [[NSMutableArray alloc] init];
     for (NSDictionary *userDict in array) {
         RealTimeDocumetUser *newUser = [[RealTimeDocumetUser alloc] initWithDictionary:userDict error:nil];
-        [usersArray addObject:newUser];
+        if (newUser) {
+            [usersArray addObject:newUser];
+        }
     }
     return [usersArray copy];
 }

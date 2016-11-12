@@ -16,8 +16,7 @@
 @property (strong, nonatomic) FIRDatabaseReference *documetsRef;
 @property (strong, nonatomic) NSArray<RealTimeDocumetDocument *> *documents;
 
-@property (strong, nonatomic) NSMutableArray<DocumentCompletionBlock> *callbacksForObserveActiveDocuments;
-@property (strong, nonatomic) NSMutableArray<UsersCompletionBlock> *callbacksForObserveJoinRequests;
+@property (strong, nonatomic) NSMutableArray<DocumentCompletionBlock> *documentListeners;
 
 @end
 
@@ -38,7 +37,7 @@ static DocumentsDataHandler *handler;
     if (self) {
         self.documetsRef = [[[FIRDatabase database] reference] child:@"documents"];
         
-        self.callbacksForObserveActiveDocuments = [[NSMutableArray alloc] init];
+        self.documentListeners = [[NSMutableArray alloc] init];
         
         [self observeDocuments];
     }
@@ -52,15 +51,14 @@ static DocumentsDataHandler *handler;
         if (snapshot.value == [NSNull null]) { return; }
         
         NSArray<NSDictionary *> *documentDicts = [(NSDictionary *)snapshot.value allValues];
-        
+    
         self.documents = [RealTimeDocumetDocument documentArrayWithArray:documentDicts];
     }];
 }
 
 -(void)setDocuments:(NSArray<RealTimeDocumetDocument *> *)documents {
-    NSArray<RealTimeDocumetDocument *> *oldDocumentList = _documents;
     _documents = documents;
-    [self notifyObserversForActiveDocumentsIfNeededWithOldDocuments:oldDocumentList newDocumentsList:documents];
+    [self notifyDocumentObserversOnChange];
 }
 
 -(void)getDocumentWithId:(NSString *)documentId completionBlock:(void(^)(RealTimeDocumetDocument *document))completionBlock {
@@ -76,11 +74,11 @@ static DocumentsDataHandler *handler;
 
 #pragma mark - Commands
 
--(NSString *)createNewDocumentWithTitle:(NSString *)title userId:(NSString *)userId completion:(Completion)completion {
+-(NSString *)createNewDocumentWithTitle:(NSString *)title userId:(NSString *)userId creatingUserName:(NSString *)creatingUserName completion:(Completion)completion {
     FIRDatabaseReference *newDocumentRef = [self.documetsRef childByAutoId];
     NSString *newDocumentKey = newDocumentRef.key;
     
-    RealTimeDocumetDocument *newDocument = [[RealTimeDocumetDocument alloc] initForCreationWithDocumentId:newDocumentKey title:title creatingUserId:userId];
+    RealTimeDocumetDocument *newDocument = [[RealTimeDocumetDocument alloc] initForCreationWithDocumentId:newDocumentKey title:title creatingUserId:userId creatingUserName:creatingUserName];
     
     [newDocumentRef setValue:[newDocument toDictionary] withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
         if (completion) completion(error);
@@ -89,7 +87,7 @@ static DocumentsDataHandler *handler;
     return newDocumentKey;
 }
 
--(void)requestToJoinDocumentWithDocumentId:(NSString *)documentId withUserId:(NSString *)userId {
+-(void)requestToJoinDocumentWithDocumentId:(NSString *)documentId withUserId:(NSString *)userId requestingUserName:(NSString *)requestingUserName {
     [self getDocumentWithId:documentId completionBlock:^(RealTimeDocumetDocument *document) {
         if (!document) {
             return; //TODO: add fail block
@@ -97,7 +95,7 @@ static DocumentsDataHandler *handler;
         
         RealTimeDocumetUser *requestingUserInDocument = [document userForId:userId];
         if (!requestingUserInDocument) {
-            requestingUserInDocument = [RealTimeDocumetUser userForRequestWithUserId:userId];
+            requestingUserInDocument = [RealTimeDocumetUser userForRequestWithUserId:userId username:requestingUserName];
             [document addUser:requestingUserInDocument];
         } else {
             requestingUserInDocument.status = RealTimeDocumetUserStatusRequested;
@@ -172,38 +170,32 @@ static DocumentsDataHandler *handler;
     }];
 }
 
+#pragma mark - Commands for edit
+
+-(void)editBodyForDocumentWithId:(NSString *)documentId newBody:(NSString *)newBody {
+    [[[self.documetsRef child:documentId] child:@"body"] setValue:newBody];
+}
+
+-(void)editTitleForDocumentWithId:(NSString *)documentId newTitle:(NSString *)newTitle {
+    [[[self.documetsRef child:documentId] child:@"title"] setValue:newTitle];
+}
+
 #pragma mark - Observers
 
--(void)observeActiveDocumentsWithUpdateBlock:(DocumentCompletionBlock)updateBlock {
-    [self.callbacksForObserveActiveDocuments addObject:updateBlock];
-}
-
--(void)notifyObserversForActiveDocumentsIfNeededWithOldDocuments:(NSArray<RealTimeDocumetDocument *> *)oldDocumentsList newDocumentsList:(NSArray<RealTimeDocumetDocument *> *)newDocumentsList {
-    BOOL needsToNotify = NO;
-    if (!oldDocumentsList) {
-        needsToNotify = YES;
-    }
-    //TODO: check if need to notify
+-(void)observeDocumentsWithUpdateBlock:(DocumentCompletionBlock)updateBlock {
+    updateBlock(self.documents);
     
-    NSArray<RealTimeDocumetDocument *> *activeDocuments = [self activeDocumentsInList:newDocumentsList];
-    
-    for (DocumentCompletionBlock block in self.callbacksForObserveActiveDocuments) {
-        block(activeDocuments);
+    [self.documentListeners addObject:updateBlock];
+}
+
+-(void)notifyDocumentObserversOnChange {
+    for (DocumentCompletionBlock completionBlock in self.documentListeners) {
+        completionBlock(self.documents);
     }
 }
 
--(NSArray<RealTimeDocumetDocument *> *)activeDocumentsInList:(NSArray<RealTimeDocumetDocument *> *)documents {
-    NSMutableArray *activeDocs = [[NSMutableArray alloc] init];
-    for (RealTimeDocumetDocument *document in documents) {
-        if (document.documentIsActive) {
-            [activeDocs addObject:document];
-        }
-    }
-    return activeDocs;
-}
-
--(void)observeJoinRequestsOnDocumentWithId:(NSString *)documentId waitingForApprovalListUpdatedBlock:(UsersCompletionBlock)waitingForApprovalListUpdatedBlock {
-    [[[self.documetsRef child:documentId] child:@"users"] observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+-(void)observeNewJoinRequestsOnDocumentWithId:(NSString *)documentId waitingForApprovalListUpdatedBlock:(UsersCompletionBlock)waitingForApprovalListUpdatedBlock {
+    [[[self.documetsRef child:documentId] child:@"users"] observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         if (snapshot.value == [NSNull null]) { return; }
         
         NSArray<NSDictionary *> *userDicts = [(NSDictionary *)snapshot.value allValues];
@@ -214,13 +206,29 @@ static DocumentsDataHandler *handler;
 }
 
 -(NSArray<RealTimeDocumetUser *> *)requestedUsersFromListOfUsers:(NSArray<RealTimeDocumetUser *> *)users {
-    NSMutableArray *requestedUsers = [[NSMutableArray alloc] init];
-    for (RealTimeDocumetUser *user in users) {
-        if (user.status == RealTimeDocumetUserStatusRequested) {
-            [requestedUsers addObject:user];
-        }
-    }
-    return requestedUsers;
+    return [users filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(RealTimeDocumetUser *user, NSDictionary *bindings) {
+        return user.status == RealTimeDocumetUserStatusRequested;
+    }]];
+}
+
+-(void)observeDocumentWithId:(NSString *)documentId updateBlock:(SingleDocumentCompletionBlock)updateBlock {
+    [[self.documetsRef child:documentId] observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        if (snapshot.value == [NSNull null]) { return; }
+        
+        NSDictionary *documentDict = snapshot.value;
+        RealTimeDocumetDocument *document = [[RealTimeDocumetDocument alloc] initWithDictionary:documentDict error:nil];
+        updateBlock(document);
+    }];
+}
+
+-(void)observeDocumentUsersWithDocumentId:(NSString *)documentId updateBlock:(UsersCompletionBlock)updateBlock {
+    [[[self.documetsRef child:documentId] child:@"users"] observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        if (snapshot.value == [NSNull null]) { return; }
+        
+        NSArray<NSDictionary *> *userDicts = [(NSDictionary *)snapshot.value allValues];
+        NSArray<RealTimeDocumetUser *> *usersInDocument = [RealTimeDocumetUser usersArrayWithArray:userDicts];
+        updateBlock(usersInDocument);
+    }];
 }
 
 @end

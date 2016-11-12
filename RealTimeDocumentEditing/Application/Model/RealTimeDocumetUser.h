@@ -17,10 +17,11 @@ typedef enum {
 
 @interface RealTimeDocumetUser : JSONModel
 
-+(RealTimeDocumetUser *)userForCreatorWithUserId:(NSString *)userId;
-+(RealTimeDocumetUser *)userForRequestWithUserId:(NSString *)userId;
++(RealTimeDocumetUser *)userForCreatorWithUserId:(NSString *)userId username:(NSString *)username;
++(RealTimeDocumetUser *)userForRequestWithUserId:(NSString *)userId username:(NSString *)username;
 
 @property (strong, nonatomic) NSString *userId;
+@property (strong, nonatomic) NSString *username;
 @property (nonatomic) RealTimeDocumetUserStatus status;
 @property (nonatomic) NSUInteger cursorPosition;
 
